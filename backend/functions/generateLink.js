@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const { db, OPENTOK_APP_ID, OPENTOK_APP_SECRET } = require('./utils/constants');
+const { OPENTOK_APP_ID, OPENTOK_APP_SECRET } = require('./utils/constants');
 
 const OpenTok = require("opentok");
 const opentok = new OpenTok(OPENTOK_APP_ID, OPENTOK_APP_SECRET);
