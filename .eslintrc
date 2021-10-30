@@ -1,0 +1,107 @@
+{
+  "root": true,
+  "env": {
+    "es6": true,
+    "browser": true,
+    "es2021": true
+  },
+  "ignorePatterns": ["node_modules/**", "tsconfig.json"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["@typescript-eslint", "prettier", "unused-imports", "progress"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "react-app",
+    "prettier"
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "none",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    /* "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [
+          ".tsx"
+        ]
+      }
+    ], */
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never",
+        "js": "never"
+      }
+    ],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-unused-vars": ["warn"],
+    "no-extra-boolean-cast": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    /* "filenames/match-exported": [
+      "error"
+    ], */
+    "import/order": [
+      "warn",
+      {
+        "groups": [
+          ["builtin", "external"],
+          "internal",
+          "parent",
+          ["sibling", "index"]
+        ],
+        "newlines-between": "always-and-inside-groups"
+      }
+    ],
+    "import/no-named-as-default": 0,
+    // "sort-keys": "error", enable to get errors about sort keys
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["../.. /*"] // relative imports are allowed only up two one directory above the current
+      }
+    ],
+    "arrow-body-style": [
+      "error",
+      "as-needed",
+      {
+        "requireReturnForObjectLiteral": true
+      }
+    ],
+    "import/no-extraneous-dependencies": ["error"],
+    "prettier/prettier": "error",
+    "progress/activate": 1
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
