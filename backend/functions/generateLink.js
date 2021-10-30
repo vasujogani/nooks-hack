@@ -9,11 +9,11 @@ var helpers = require('./utils/helpers');
 var randomWords = require('random-words');
 
 exports.generateLink = functions.https.onRequest((request, response) => {
-    getSessionToken().then(token => {
+    getSessionId().then(sessionId => {
         const data = {
             created_at: admin.firestore.Timestamp.now()._seconds,
             link_id: request.body.alphanumeric_link ? helpers.randomString(64) : randomWords({ exactly: 4, join: '-' }),
-            session_id: token
+            session_id: sessionId
         };
         admin.firestore().collection('links').doc(data.link_id).set(data).then(writeResult => {
             console.log(writeResult);
@@ -24,7 +24,7 @@ exports.generateLink = functions.https.onRequest((request, response) => {
     functions.logger.info("Hello logs!", {structuredData: true});
 });
 
-const getSessionToken = () => {
+const getSessionId = () => {
     return new Promise((resolve, reject) => {
       opentok.createSession(function (err, session) {
           if (err) return console.log(err);

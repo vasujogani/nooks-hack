@@ -1,6 +1,5 @@
-const { initializeApp } = require("firebase-admin");
-
-initializeApp();
+const admin = require("firebase-admin");
+admin.initializeApp();
 
 const generateLink = require('./generateLink');
 const joinRoom = require('./joinRoom');
