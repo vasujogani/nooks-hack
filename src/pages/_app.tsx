@@ -1,9 +1,12 @@
-import { AppProps } from 'next/app';
+import { AppProps } from "next/app";
 
-import '../styles/main.css';
+import "../styles/main.css";
+import { AppContextProvider } from "../context/AppContext";
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
-  <Component {...pageProps} />
+  <AppContextProvider>
+    <Component {...pageProps} />
+  </AppContextProvider>
 );
 
 export default MyApp;
