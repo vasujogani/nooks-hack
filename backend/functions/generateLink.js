@@ -15,7 +15,7 @@ exports.generateLink = functions.https.onRequest((request, response) => {
             link_id: request.body.alphanumeric_link ? helpers.randomString(64) : randomWords({ exactly: 4, join: '-' }),
             session_id: token
         };
-        admin.firestore().collection('rooms').doc(data.link_id).set(data).then(writeResult => {
+        admin.firestore().collection('links').doc(data.link_id).set(data).then(writeResult => {
             console.log(writeResult);
             return response.json(data);
         });
