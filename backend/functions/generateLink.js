@@ -29,7 +29,7 @@ const getSessionToken = () => {
       opentok.createSession(function (err, session) {
           if (err) return console.log(err);
           token = session.generateToken();
-          resolve(token);
+          resolve(session.sessionId);
       });
     });
 }
