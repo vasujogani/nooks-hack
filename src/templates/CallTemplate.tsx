@@ -1,26 +1,17 @@
 import { ReactNode } from "react";
 
-import Link from "next/link";
-
-import { AppConfig } from "../utils/AppConfig";
-
 type ICallProps = {
-  meta: ReactNode;
+  toolbar: ReactNode;
   children: ReactNode;
 };
 
 const CallTemplate = (props: ICallProps) => (
-  <div className="container mx-auto border-2 border-white h-screen">
-    <div className="w-full text-gray-700">
-      {props.meta}
-
-      <div className="max-w-screen-md mx-auto broder-b border-red-400 ">
-        <div className="py-5 text-xl content">{props.children}</div>
-
-        <div className="border-t border-gray-300 text-center py-8 text-sm">
-          © Copyright {new Date().getFullYear()} {AppConfig.title}
-        </div>
+  <div className="mx-auto h-screen overflow-x-hidden">
+    <div className="w-full text-gray-700 h-full border-2 border-white flex flex-1 flex-col justify-between">
+      <div className="flex flex-1 py-5 text-xl content border-2 border-green-400">
+        {props.children}
       </div>
+      {props.toolbar}
     </div>
   </div>
 );
