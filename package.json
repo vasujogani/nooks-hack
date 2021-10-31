@@ -14,6 +14,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "firebase": "^9.2.0",
     "@heroicons/react": "^1.0.5",
     "@opentok/client": "^2.21.1",
     "agora-rtc-sdk-ng": "^4.7.2",
