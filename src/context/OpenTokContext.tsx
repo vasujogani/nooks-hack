@@ -170,12 +170,13 @@ const startJoiningRoomAction =
         console.log("******hanlde stream created");
         const type: "camera" | "screen" | "custom" = stream.videoType;
         const subscriber = await subscribe(session, stream);
-        console.log("subscriber");
-        console.log(subscriber);
         if (subscriber) {
           subscriber.setAudioVolume(80);
           const videoElement = (subscriber as any).videoElement();
 
+          if (videoElement) {
+            videoElement.className = "OT_video-element";
+          }
           console.log("video element");
           console.log(videoElement);
 

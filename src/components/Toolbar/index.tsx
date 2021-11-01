@@ -15,8 +15,11 @@ import { useContext } from "react";
 import Image from "next/image";
 import HeaderItem from "./HeaderItem";
 import { Context as OpenTokContext } from "../../context/OpenTokContext";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
+
   const {
     toggleAudio,
     toggleCamera,
@@ -55,7 +58,7 @@ const Header = () => {
         />
         <HeaderItem
           onClick={() => {
-            window.navigator.clipboard.writeText(
+            navigator.clipboard.writeText(
               `https://localhost:3000/call/${linkId}`
             );
           }}
@@ -64,8 +67,10 @@ const Header = () => {
           selected={false}
         />
         <HeaderItem
-          onClick={() => {}}
-          title="Logout"
+          onClick={() => {
+            router.push("/");
+          }}
+          title="End"
           Icon={LogoutIcon}
           selected={false}
         />

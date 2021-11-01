@@ -23,7 +23,6 @@ const VideoBox = (props: { stream: OpenTokStream }) => {
         position: "relative",
         height: "100%",
         width: "100%",
-        border: "1px solid red",
       }}
       onClick={(e: any) => {
         e.stopPropagation();
@@ -38,8 +37,8 @@ const VideoBox = (props: { stream: OpenTokStream }) => {
           marginLeft: "0px",
           position: "absolute",
           overflow: "hidden",
+          border: "1px solid red",
           borderRadius: "10%",
-          border: "2px solid blue",
         }}
       >
         <div
@@ -49,10 +48,11 @@ const VideoBox = (props: { stream: OpenTokStream }) => {
             "OT_video-element",
             "OT_widget-container"
           )}
-          style={{ height: "100%", width: "100%", position: "relative" }}
+          style={{
+            height: "100%",
+            width: "100%",
+          }}
         ></div>
-
-        <div>Video Box</div>
       </div>
     </div>
   );
