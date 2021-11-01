@@ -72,10 +72,11 @@ const Header = () => {
           title="Cowork"
           Icon={SparklesIcon}
           selected={false}
+          disabled
         />
         <HeaderItem
           onClick={() => {
-            router.push("/");
+            router.push("/done");
           }}
           title="End"
           Icon={LogoutIcon}
