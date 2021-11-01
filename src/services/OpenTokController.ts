@@ -17,16 +17,28 @@ OT.setLogLevel(3);
 
 type joinOpenTokRoomParams = {
   sessionId: string;
-  sessionToken: string;
 };
-export const connectToOpenTokRoom = async (data: joinOpenTokRoomParams) => {
-  const { sessionId, sessionToken } = data;
+export const initToOpenTokRoom = async (data: joinOpenTokRoomParams) => {
+  const { sessionId } = data;
   try {
     const session = OT.initSession(APPID, sessionId);
     if (!session) {
       return null;
     }
 
+    return session;
+  } catch (err) {
+    console.log("[ot] caught error joining room");
+    console.log(err);
+    return null;
+  }
+};
+
+export const connectToOpenTokRoom = async (
+  session: OT.Session,
+  sessionToken: string
+): Promise<boolean> => {
+  try {
     const connectPromise = promisify(
       (
         sessionToken: string,
@@ -37,12 +49,9 @@ export const connectToOpenTokRoom = async (data: joinOpenTokRoomParams) => {
         })
     );
     await connectPromise(sessionToken);
-
-    return session;
-  } catch (err) {
-    console.log("[ot] caught error joining room");
-    console.log(err);
-    return null;
+    return true;
+  } catch (e) {
+    return false;
   }
 };
 
@@ -76,6 +85,7 @@ export const subscribeToUpdates = (
     handleStreamDestroyed,
     handleStreamPropertyChanged,
   } = listeners;
+  console.log("subscribe to update....");
   session.on("streamCreated", async (event) => {
     console.log("[ot-ctrl] stream created: ", event);
     await handleStreamCreated(session, event.stream);
@@ -116,9 +126,13 @@ export const subscribe = async (
         subscribeToVideo: true,
       },
       async (error) => {
-        if (!error) resolve(subscriber);
         console.log("error subscribing ");
-        resolve(null);
+        console.log(error);
+        if (error) {
+          resolve(null);
+        } else {
+          resolve(subscriber);
+        }
       }
     );
   });
@@ -233,6 +247,7 @@ export const setAudioState = async (
   publisher: OT.Publisher
 ) => {
   const { on, onComplete } = data;
+  console.log("setting audio to be ", on);
   publisher.publishAudio(on);
   onComplete();
 };

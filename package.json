@@ -14,13 +14,17 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "firebase": "^9.2.0",
     "@heroicons/react": "^1.0.5",
     "@opentok/client": "^2.21.1",
     "agora-rtc-sdk-ng": "^4.7.2",
     "async-mutex": "^0.3.2",
+    "axios": "^0.24.0",
+    "clsx": "^1.1.1",
+    "firebase": "^9.2.0",
+    "jquery": "^3.6.0",
     "next": "^12.0.0",
     "next-seo": "^4.28.1",
+    "rc-resize-observer": "^1.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "styled-jsx-plugin-postcss": "^4.0.1",

@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 
+import axios from "axios";
 import { Main } from "../templates/Main";
 
 const Index = () => {
@@ -7,6 +8,17 @@ const Index = () => {
 
   const handleOnJoinRoomClick = () => {
     router.push("/call");
+  };
+
+  const handleGenerateNewLink = () => {
+    axios({
+      method: "GET",
+      url: "https://us-central1-nooks-hack.cloudfunctions.net/generateLink",
+      headers: {},
+    }).then((response) => {
+      console.log("response");
+      console.log(response.data);
+    });
   };
   return (
     <Main meta={<div />}>

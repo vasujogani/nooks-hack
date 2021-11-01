@@ -1,6 +1,9 @@
 import {
   connectToOpenTokRoom,
+  initToOpenTokRoom,
   publish,
+  setAudioState,
+  setVideoState,
   streamPropertyChangedParamType,
   subscribe,
   subscribeToUpdates,
@@ -26,11 +29,21 @@ const SET_LINK_ID = "SET_LINK_ID";
 const SET_SESSION = "SET_SESSION";
 const SET_ERROR = "SET_ERROR";
 
-type OpenTokState = {
+export type OpenTokStream = {
+  stream: OT.Stream;
+  videoElement: HTMLVideoElement | null;
+  audioOn: boolean;
+  videoOn: boolean;
+  type: string;
+  id: string;
+  subscriber: OT.Subscriber | null;
+};
+
+export type OpenTokState = {
   loading: boolean;
   inRoom: boolean;
   roomVolume: number;
-  streams: Record<string, OT.Stream>;
+  streams: Record<string, OpenTokStream>;
   session: OT.Session | null;
   publisher: OT.Publisher | null;
   sessionToken: string | null;
@@ -38,6 +51,7 @@ type OpenTokState = {
   sessionId: string | null;
   linkId: string | null;
 };
+
 const initialState: OpenTokState = {
   loading: false,
   inRoom: false,
@@ -142,9 +156,8 @@ const startJoiningRoomAction =
     dispatch({ type: SET_SESSION_TOKEN, payload: sessionToken });
     dispatch({ type: SET_SESSION_ID, payload: sessionId });
     dispatch({ type: SET_LINK_ID, payload: linkId });
-    const session = await connectToOpenTokRoom({
+    const session = await initToOpenTokRoom({
       sessionId,
-      sessionToken,
     });
     console.log(session);
     if (session) {
@@ -154,11 +167,18 @@ const startJoiningRoomAction =
         session: OT.Session,
         stream: OT.Stream
       ) => {
+        console.log("******hanlde stream created");
         const type: "camera" | "screen" | "custom" = stream.videoType;
         const subscriber = await subscribe(session, stream);
+        console.log("subscriber");
+        console.log(subscriber);
         if (subscriber) {
-          subscriber.setAudioVolume(0.8);
+          subscriber.setAudioVolume(80);
           const videoElement = (subscriber as any).videoElement();
+
+          console.log("video element");
+          console.log(videoElement);
+
           dispatch({
             type: ADD_STREAM,
             payload: {
@@ -199,10 +219,32 @@ const startJoiningRoomAction =
         handleStreamPropertyChanged,
       });
 
+      if (!(await connectToOpenTokRoom(session, sessionToken))) {
+        dispatch({ type: SET_ERROR, payload: "connect to opentok room" });
+      }
+
       const publisher = await publish(session, {
-        audioOn: true,
+        audioOn: false,
         videoOn: true,
       });
+
+      if (publisher) {
+        const myVideoElement = (publisher as any).videoElement();
+        if (myVideoElement) {
+          myVideoElement.className = "OT_video-element";
+          dispatch({
+            type: ADD_STREAM,
+            payload: {
+              id: "me",
+              audioOn: false,
+              videoOn: true,
+              videoElement: myVideoElement,
+              type: "video",
+              subscriber: null,
+            },
+          });
+        }
+      }
 
       if (publisher) {
         dispatch({ type: SET_MY_PUBLISHER, payload: publisher });
@@ -219,8 +261,22 @@ const startJoiningRoomAction =
     }
   };
 
+const toggleAudio =
+  (dispatch: any) => (on: boolean, publisher: OT.Publisher) => {
+    console.log("about to toggle audio");
+    setAudioState({ on, onComplete: () => {} }, publisher);
+    dispatch({ type: UPDATE_STREAM, payload: { id: "me", audioOn: on } });
+  };
+
+const toggleCamera =
+  (dispatch: any) => (on: boolean, publisher: OT.Publisher) => {
+    console.log("about to toggle audio");
+    setVideoState({ on, onComplete: () => {} }, publisher);
+    dispatch({ type: UPDATE_STREAM, payload: { id: "me", videoOn: on } });
+  };
+
 export const { Context, Provider } = createDataContext(
   openTokReducer,
-  { startJoiningRoomAction },
+  { startJoiningRoomAction, toggleCamera, toggleAudio },
   initialState
 );

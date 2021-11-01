@@ -1,5 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { Context as OpenTokContext } from "../../context/OpenTokContext";
+import {
+  Context as OpenTokContext,
+  OpenTokStream,
+} from "../../context/OpenTokContext";
+import ResizeObserver from "rc-resize-observer";
+import VideoBox from "./VideoBox";
+
+import initLayoutContainer, { options } from "../../layout/layoutConfig";
 
 const CallBox = (props: {
   sessionToken: string;
@@ -8,21 +15,51 @@ const CallBox = (props: {
 }) => {
   const { sessionToken, linkId, sessionId } = props;
   const {
-    state: { loading, inRoom },
+    state: { streams },
     startJoiningRoomAction,
   } = useContext(OpenTokContext);
   console.log("state");
-  console.log(startJoiningRoomAction);
 
   useEffect(() => {
     console.log("ih");
     startJoiningRoomAction(sessionId, sessionToken, linkId);
   }, []);
   return (
-    <div>
-      {inRoom ? "in room " : "not in room"}
-      {loading ? "loading" : "done loading"}
-    </div>
+    <ResizeObserver
+      onResize={() => {
+        // eslint-disable-next-line prefer-const
+        let resizeTimeout;
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          // OpenTokController.layoutContainer?.layout();
+        }, 100);
+      }}
+    >
+      <div
+        id="layoutContainer"
+        ref={(node) => {
+          // @ts-ignore
+          initLayoutContainer && initLayoutContainer(node, { ...options });
+        }}
+        style={{
+          border: "2px solid blue",
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flex: 1,
+          // position: "absolute",
+        }}
+      >
+        {(Object.values(streams) as OpenTokStream[]).map(
+          (stream: OpenTokStream, idx: number) => (
+            <VideoBox key={idx} stream={stream} />
+          )
+        )}
+        <div className="OT_subscriber">One</div>
+        <div className="OT_subscriber">One</div>
+        <div className="OT_subscriber">One</div>
+      </div>
+    </ResizeObserver>
   );
 };
 

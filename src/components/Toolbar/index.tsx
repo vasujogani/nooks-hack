@@ -11,22 +11,64 @@ import {
   ShareIcon,
   LogoutIcon,
 } from "@heroicons/react/outline";
+import { useContext } from "react";
 import Image from "next/image";
 import HeaderItem from "./HeaderItem";
+import { Context as OpenTokContext } from "../../context/OpenTokContext";
 
 const Header = () => {
+  const {
+    toggleAudio,
+    toggleCamera,
+    state: { streams, publisher, linkId },
+  } = useContext(OpenTokContext);
+
+  const audioOn = streams["me"]?.audioOn ?? false;
+  const videoOn = streams["me"]?.videoOn ?? false;
+
   return (
-    <header className="flex flex-col sm:flex-row m-5 justify-between items-center h-auto">
+    <header className="flex flex-col sm:flex-row justify-between items-center h-auto">
       <div className="flex flex-grow justify-evenly max-w-2xl">
-        <HeaderItem title="Audio" Icon={MicrophoneIcon} selected={false} />
-        <HeaderItem title="Camera" Icon={VideoCameraIcon} selected={true} />
         <HeaderItem
+          onClick={() => {
+            console.log("clicked toggle toolbar");
+            toggleAudio(!audioOn, publisher);
+          }}
+          title="Audio"
+          Icon={MicrophoneIcon}
+          selected={!audioOn}
+        />
+        <HeaderItem
+          onClick={() => {
+            toggleCamera(!videoOn, publisher);
+          }}
+          title="Camera"
+          Icon={VideoCameraIcon}
+          selected={!videoOn}
+        />
+        <HeaderItem
+          onClick={() => {}}
           title="Screenshare"
           Icon={PresentationChartLineIcon}
           selected={true}
+          disabled
         />
-        <HeaderItem title="Copy Link" Icon={ShareIcon} selected={false} />
-        <HeaderItem title="Logout" Icon={LogoutIcon} selected={false} />
+        <HeaderItem
+          onClick={() => {
+            window.navigator.clipboard.writeText(
+              `https://localhost:3000/call/${linkId}`
+            );
+          }}
+          title="Copy Link"
+          Icon={ShareIcon}
+          selected={false}
+        />
+        <HeaderItem
+          onClick={() => {}}
+          title="Logout"
+          Icon={LogoutIcon}
+          selected={false}
+        />
       </div>
       <Image
         className="object-contain"

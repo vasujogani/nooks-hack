@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
 import { useEffect, useContext } from "react";
+import dynamic from "next/dynamic";
 
 import { CallTemplate } from "../../templates/CallTemplate";
 
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import Toolbar from "../../components/Toolbar";
 
-import dynamic from "next/dynamic";
+const Toolbar = dynamic(() => import("../../components/Toolbar"), {
+  ssr: false,
+});
 
 const CallBox = dynamic(
   () => {
@@ -33,9 +35,6 @@ const Room = ({
   return (
     <CallTemplate toolbar={<Toolbar />}>
       <div className="flex flex-1 h-100 flex-col">
-        Main
-        <div>{sessionToken}</div>
-        <div>{linkId}</div>
         <CallBox
           sessionToken={sessionToken}
           linkId={linkId}
