@@ -5,6 +5,7 @@ import { OpenTokStream } from "../../../context/OpenTokContext";
 const VideoBox = (props: { stream: OpenTokStream }) => {
   const videoContainer = useRef<HTMLDivElement>(null);
   const { stream } = props;
+  const isMe = stream.id === "me";
 
   React.useEffect(() => {
     if (videoContainer.current && stream.videoElement) {
@@ -37,7 +38,7 @@ const VideoBox = (props: { stream: OpenTokStream }) => {
           marginLeft: "0px",
           position: "absolute",
           overflow: "hidden",
-          border: "1px solid red",
+          border: isMe ? "1px solid red" : undefined,
           borderRadius: "10%",
         }}
       >
