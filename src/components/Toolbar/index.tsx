@@ -10,6 +10,7 @@ import {
   PresentationChartLineIcon,
   ShareIcon,
   LogoutIcon,
+  SparklesIcon,
 } from "@heroicons/react/outline";
 import { useContext } from "react";
 import Image from "next/image";
@@ -64,6 +65,12 @@ const Header = () => {
           }}
           title="Copy Link"
           Icon={ShareIcon}
+          selected={false}
+        />
+        <HeaderItem
+          onClick={() => {}}
+          title="Cowork"
+          Icon={SparklesIcon}
           selected={false}
         />
         <HeaderItem

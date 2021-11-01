@@ -10,12 +10,12 @@ type IMainProps = {
 };
 
 const Main = (props: IMainProps) => (
-  <div className="container mx-auto border h-screen flex flex-col items-stretch justify-between">
-    <div className="w-full border-2 border-white ">
-      {props.meta}
-
-      <div className="max-w-screen-md mx-auto flex">
-        <div className="py-5 text-xl content">{props.children}</div>
+  <div className="mx-auto h-screen overflow-x-hidden">
+    <div className="w-full text-gray-700 h-full border-2 border-white flex flex-1 flex-col justify-between">
+      <div className="max-w-screen-md mx-auto flex justify-center items-center">
+        <div className="py-5 text-xl content flex items-center justify-center flex-col">
+          {props.children}
+        </div>
       </div>
     </div>
     <div className="text-center py-8 text-sm self-center">

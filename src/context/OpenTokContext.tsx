@@ -271,7 +271,7 @@ const toggleAudio =
 
 const toggleCamera =
   (dispatch: any) => (on: boolean, publisher: OT.Publisher) => {
-    console.log("about to toggle audio");
+    console.log("about to toggle video");
     setVideoState({ on, onComplete: () => {} }, publisher);
     dispatch({ type: UPDATE_STREAM, payload: { id: "me", videoOn: on } });
   };
