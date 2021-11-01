@@ -2,8 +2,6 @@ import { useRouter } from "next/router";
 
 import { Main } from "../../templates/Main";
 
-import Header from "../../components/Header";
-
 const Call = ({}) => {
   const router = useRouter();
 
